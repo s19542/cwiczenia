@@ -24,20 +24,20 @@ namespace cw.Controllers
         {
             return Ok(_dbService.GetStudents());
         }
-        [HttpGet("{id}")]
-        public IActionResult GetStudent(int id)
+        [HttpGet("{id}/{grade}")]
+        public IActionResult GetStudent(int id, string grade)
         {
             if (id == 1)
             {
-                return Ok("Kowalski");
+                return Ok("Kowalski "+grade);
 
             }
             else if (id == 2)
             {
-                return Ok("Malewski");
+                return Ok("Malewski"+grade);
 
             }
-            return NotFound("Nie znalieziono studenta");
+            return NotFound("Nie znalieziono studenta"+grade);
         }
 
 
@@ -46,8 +46,10 @@ namespace cw.Controllers
         {
             //... add to database
             //... generating index number
+
             student.IndexNumber = $"s{new Random().Next(1, 20000)}";
-            
+           // _dbService.GetStudents().Add(student);//зберігає до нашої мокдб, але після перезапуску програми запосчені дані зникають            
+                                                     //коли метод вертає ICollection<Student>
             return Ok(student);
         }
 
@@ -60,6 +62,7 @@ namespace cw.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteStudent(int id)
         {
+            
             return Ok("Usuwanie ukończone");
         }
 

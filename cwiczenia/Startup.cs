@@ -35,13 +35,30 @@ namespace cwiczenia
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseRouting();
+            // Middleware1
+            app.UseRouting();//шукає контролер і методу для запиту
 
-            app.UseAuthorization();
+            //Middleware2
+            app.UseAuthorization();//перевіряє забезпечення контролером
 
+            app.UseMiddleware<CustomMiddleware>();//підключаємо наш CustomMiddleware до колейкі 
+
+            //Middleware3 
+            //dodaje naglowek do odpowiedzi
+            app.Use(async (context, c) =>
+            {
+                context.Response.Headers.Add("Alisa zhgi", "s19542 gwiazdka");
+
+                await c.Invoke();//передає естафету Middleware4
+            }
+            );
+
+
+            //Middleware4
+            //Middleware, який дозволяє запустити знайдені контролер і методу, які пов'язані з даним запитом HTTP 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();//для GET POST ... |??????
+                endpoints.MapControllers();
 
                 endpoints.MapGet("/", async context =>
                 {
