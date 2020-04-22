@@ -14,12 +14,12 @@ namespace cw.Controllers
     {
 
         private const string ConString = "Data Source=db-mssql;Initial Catalog=s19542;Integrated Security=True";
-        private readonly IDbService _dbService;
-        public StudentsController(IDbService dbService)
+      //  private readonly IDbService _dbService;
+      /*  public StudentsController(IDbService dbService)
         {
             _dbService = dbService;
         }
-
+        */
         [HttpGet]
         public IActionResult GetStudent()
         {
