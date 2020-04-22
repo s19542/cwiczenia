@@ -10,11 +10,11 @@ namespace cw.DAL
 
         public MockDbService()
         {
-            _students = new List<Student> { new Student{ IdStudent=1, FirstName="Jan", LastName="Kowalski"},
+            /*_students = new List<Student> { new Student{ IdStudent=1, FirstName="Jan", LastName="Kowalski"},
                 new Student{ IdStudent=2, FirstName="Anna", LastName="Makewska"},
                 new Student{ IdStudent=3, FirstName="Andrzej", LastName="And"}
 
-            };
+            };*/
         }
         public IEnumerable<Student> GetStudents()
         {

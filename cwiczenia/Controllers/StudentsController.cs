@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Data.SqlClient;
 using cw.DAL;
 using cw.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace cw.Controllers
 {
@@ -14,30 +12,67 @@ namespace cw.Controllers
 
     public class StudentsController : ControllerBase
     {
-       private readonly IDbService _dbService;
+
+        private const string ConString = "Data Source=db-mssql;Initial Catalog=s19542;Integrated Security=True";
+        private readonly IDbService _dbService;
         public StudentsController(IDbService dbService)
         {
             _dbService = dbService;
         }
+
         [HttpGet]
         public IActionResult GetStudent()
         {
-            return Ok(_dbService.GetStudents());
+            var list = new List<Student>();
+
+            using (var con = new SqlConnection(ConString))
+            using (var com = new SqlCommand())
+            {
+                com.Connection = con;
+                com.CommandText = "select FirstName,LastName,BirthDate, Name, Semester from Student INNER JOIN Enrollment en ON Student.IdEnrollment = en.IdEnrollment INNER JOIN Studies st ON en.IdStudy = st.IdStudy;";
+
+                con.Open();
+
+                var dr = com.ExecuteReader();
+                while (dr.Read())
+                {
+                    var student = new Student();
+                    student.FirstName = dr["FirstName"].ToString();
+                    student.LastName = dr["LastName"].ToString();
+                    student.BirthDate = dr["BirthDate"].ToString();
+                    student.Studies = dr["Name"].ToString();
+                    student.Semester = dr["Semester"].ToString();
+
+                    list.Add(student);
+
+                }
+
+            }
+
+            return Ok(list);
         }
-        [HttpGet("{id}/{grade}")]
-        public IActionResult GetStudent(int id, string grade)
+        [HttpGet("{id}")]
+        public IActionResult GetStudent(string id)
         {
-            if (id == 1)
+            using (var con = new SqlConnection(ConString))
+            using (var com = new SqlCommand())
             {
-                return Ok("Kowalski "+grade);
+                com.Connection = con;
+                com.CommandText = "select Semester, StartDate, Name  from Enrollment INNER JOIN Studies on Enrollment.IdStudy = Studies.IdStudy WHERE IdEnrollment = (select IdEnrollment from student where indexNumber like @id ); ";
+                com.Parameters.AddWithValue("id", id);
 
-            }
-            else if (id == 2)
-            {
-                return Ok("Malewski"+grade);
+                con.Open();
+                var dr = com.ExecuteReader();
 
+                while (dr.Read()) { 
+
+                   return Ok(string.Concat("Semester: " + dr["Semester"].ToString(), "\nStartDate: ", dr["StartDate"].ToString(), "\nName of studies: ", dr["Name"].ToString()));
+                }
+
+
+
+                 return NotFound("Nie znalieziono studenta");
             }
-            return NotFound("Nie znalieziono studenta"+grade);
         }
 
 
@@ -47,9 +82,9 @@ namespace cw.Controllers
             //... add to database
             //... generating index number
 
-            student.IndexNumber = $"s{new Random().Next(1, 20000)}";
-           // _dbService.GetStudents().Add(student);//зберігає до нашої мокдб, але після перезапуску програми запосчені дані зникають            
-                                                     //коли метод вертає ICollection<Student>
+            //  student.IndexNumber = $"s{new Random().Next(1, 20000)}";
+            // _dbService.GetStudents().Add(student);//зберігає до нашої мокдб, але після перезапуску програми запосчені дані зникають            
+            //коли метод вертає ICollection<Student>
             return Ok(student);//вертає в джейсоні але сереалізатор можна змінити за допомогою мідла в стартапі 
         }
 
@@ -62,7 +97,7 @@ namespace cw.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteStudent(int id)
         {
-            
+
             return Ok("Usuwanie ukończone");
         }
 
