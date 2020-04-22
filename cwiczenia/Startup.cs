@@ -32,29 +32,29 @@ namespace cwiczenia
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage();// Middleware 
             }
 
-            // Middleware1
+            // new Middleware
             app.UseRouting();//шукає контролер і методу для запиту
 
-            //Middleware2
+            // new Middleware
             app.UseAuthorization();//перевіряє забезпечення контролером
 
             app.UseMiddleware<CustomMiddleware>();//підключаємо наш CustomMiddleware до колейкі 
 
-            //Middleware3 
+            // new Middleware3 
             //dodaje naglowek do odpowiedzi
             app.Use(async (context, c) =>
             {
-                context.Response.Headers.Add("Alisa zhgi", "s19542 gwiazdka");
+                context.Response.Headers.Add("IndexNumber", "s19542");
 
-                await c.Invoke();//передає естафету Middleware4
+                await c.Invoke();//передає естафету next  Middleware
             }
             );
 
 
-            //Middleware4
+            // new Middleware4
             //Middleware, який дозволяє запустити знайдені контролер і методу, які пов'язані з даним запитом HTTP 
             app.UseEndpoints(endpoints =>
             {

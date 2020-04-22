@@ -50,7 +50,7 @@ namespace cw.Controllers
             student.IndexNumber = $"s{new Random().Next(1, 20000)}";
            // _dbService.GetStudents().Add(student);//зберігає до нашої мокдб, але після перезапуску програми запосчені дані зникають            
                                                      //коли метод вертає ICollection<Student>
-            return Ok(student);
+            return Ok(student);//вертає в джейсоні але сереалізатор можна змінити за допомогою мідла в стартапі 
         }
 
         [HttpPut("{id}")]
