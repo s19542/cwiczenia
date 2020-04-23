@@ -39,7 +39,7 @@ namespace cw.Controllers
                     var student = new Student();
                     student.FirstName = dr["FirstName"].ToString();
                     student.LastName = dr["LastName"].ToString();
-                    student.BirthDate = dr["BirthDate"].ToString();
+                    student.BirthDate = (System.DateTime)dr["BirthDate"];
                     student.Studies = dr["Name"].ToString();
                     student.Semester = dr["Semester"].ToString();
 
@@ -69,7 +69,7 @@ namespace cw.Controllers
                    return Ok(string.Concat("Semester: " + dr["Semester"].ToString(), "\nStartDate: ", dr["StartDate"].ToString(), "\nName of studies: ", dr["Name"].ToString()));
                 }
 
-
+               
 
                  return NotFound("Nie znalieziono studenta");
             }

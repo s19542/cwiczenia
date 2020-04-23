@@ -44,6 +44,7 @@ namespace cwiczenia
             app.UseMiddleware<CustomMiddleware>();//підключаємо наш CustomMiddleware до колейкі 
 
             // new Middleware3 
+
             //dodaje naglowek do odpowiedzi
             app.Use(async (context, c) =>
             {
