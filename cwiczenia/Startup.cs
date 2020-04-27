@@ -1,4 +1,5 @@
 using cw.DAL;
+using cwiczenia.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -22,7 +23,9 @@ namespace cwiczenia
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)//добавляє сервіси необхідні для роботи контролерів
         {
-            services.AddSingleton<IDbService, MockDbService>();//додаємо власну базу, яка буде вставлена в конструктор Startup
+            //  services.AddSingleton<IDbService, MockDbService>();//додаємо власну базу, яка буде вставлена в конструктор Startup
+
+            services.AddScoped<IStudentsDbService, SqlServerDbDal>();
             services.AddControllers();
 
         }
