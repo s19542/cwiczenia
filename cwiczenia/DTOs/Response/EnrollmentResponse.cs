@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace cwiczenia.DTOs.Response
 {
-    public class EnrollStudentResponse
+    public class EnrollmentResponse
     {
-            public string IndexNumber { get; set; }
+           
             public string Semester { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace cwiczenia.Services
 {
     public class SqlServerDbDal : IStudentsDbService
     {
-        public EnrollStudentResponse EnrollStudent(EnrollStudentRequest enrollStudentRequest, string connectionString)
+        public EnrollmentResponse EnrollStudent(EnrollStudentRequest enrollStudentRequest, string connectionString)
         {
             using (var con = new SqlConnection(connectionString))
             using (var com = new SqlCommand())

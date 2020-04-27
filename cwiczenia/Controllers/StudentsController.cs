@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
-using cw.DAL;
+
 using cw.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,13 +13,9 @@ namespace cw.Controllers
     public class StudentsController : ControllerBase
     {
 
-        private const string ConString = "Data Source=db-mssql;Initial Catalog=s19542;Integrated Security=True";
-      //  private readonly IDbService _dbService;
-      /*  public StudentsController(IDbService dbService)
-        {
-            _dbService = dbService;
-        }
-        */
+        private const  string ConString = "Data Source=db-mssql;Initial Catalog=s19542;Integrated Security=True";
+
+
         [HttpGet]
         public IActionResult GetStudent()
         {
@@ -36,12 +32,14 @@ namespace cw.Controllers
                 var dr = com.ExecuteReader();
                 while (dr.Read())
                 {
-                    var student = new Student();
-                    student.FirstName = dr["FirstName"].ToString();
-                    student.LastName = dr["LastName"].ToString();
-                    student.BirthDate = (System.DateTime)dr["BirthDate"];
-                    student.Studies = dr["Name"].ToString();
-                    student.Semester = dr["Semester"].ToString();
+                    var student = new Student
+                    {
+                        FirstName = dr["FirstName"].ToString(),
+                        LastName = dr["LastName"].ToString(),
+                        BirthDate = (System.DateTime)dr["BirthDate"],
+                        Studies = dr["Name"].ToString(),
+                        Semester = dr["Semester"].ToString()
+                    };
 
                     list.Add(student);
 
@@ -51,6 +49,7 @@ namespace cw.Controllers
 
             return Ok(list);
         }
+
         [HttpGet("{id}")]
         public IActionResult GetStudent(string id)
         {
@@ -64,17 +63,17 @@ namespace cw.Controllers
                 con.Open();
                 var dr = com.ExecuteReader();
 
-                while (dr.Read()) { 
+                while (dr.Read())
+                {
 
-                   return Ok(string.Concat("Semester: " + dr["Semester"].ToString(), "\nStartDate: ", dr["StartDate"].ToString(), "\nName of studies: ", dr["Name"].ToString()));
+                    return Ok(string.Concat("Semester: " + dr["Semester"].ToString(), "\nStartDate: ", dr["StartDate"].ToString(), "\nName of studies: ", dr["Name"].ToString()));
                 }
 
-               
 
-                 return NotFound("Nie znalieziono studenta");
+
+                return NotFound("Nie znalieziono studenta");
             }
         }
-
 
         [HttpPost]
         public IActionResult CreateStudent(Student student)

@@ -12,6 +12,6 @@ namespace cwiczenia.Services
     {
         public IEnumerable<Student> GetStudents();
 
-        public EnrollStudentResponse EnrollStudent(EnrollStudentRequest enrollStudentRequest, string connectionString);
+        public EnrollmentResponse EnrollStudent(EnrollStudentRequest enrollStudentRequest, string connectionString);
     }
 }
